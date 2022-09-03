@@ -1,10 +1,6 @@
 ﻿using Anduin.Core.Models;
-using MvvmCross.ViewModels;
-using System.Collections.ObjectModel;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MvvmCross.Commands;
+using MvvmCross.ViewModels;
 
 namespace Anduin.Core.ViewModels
 {
@@ -14,20 +10,25 @@ namespace Anduin.Core.ViewModels
         public FeatureBranchViewModel()
         {
             AddFeatureBranchCommand = new MvxCommand(AddFeatureBranch);
+
+            _featureBranches.Add(new FeatureBranchModel
+            {
+                Name = "Test"
+            });
         }
 
         public IMvxCommand AddFeatureBranchCommand { get; set; }
-       
+
 
         public void AddFeatureBranch()
         {
-            FeatureBranchModel p = new FeatureBranchModel
+            FeatureBranchModel featureBranch = new FeatureBranchModel
             {
                 Name = Name
             };
-            Name = " asd" ;
+            Name = Name;
 
-            FeatureBranches.Add(p);
+            FeatureBranches.Add(featureBranch);
         }
 
         public bool CanAddFeatureBranch => Name?.Length > 0;
@@ -44,8 +45,8 @@ namespace Anduin.Core.ViewModels
         public string Name
         {
             get { return _name; }
-            set 
-            { 
+            set
+            {
                 _name = value;
                 RaisePropertyChanged(() => Name);
                 RaisePropertyChanged(() => CanAddFeatureBranch);

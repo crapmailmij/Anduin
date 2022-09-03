@@ -20,7 +20,7 @@
             <ItemsControl ItemsSource="{Binding FeatureBranches}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <RadioButton Content="{Binding Name}"/>
+                        <CheckBox Content="{Binding Name ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
