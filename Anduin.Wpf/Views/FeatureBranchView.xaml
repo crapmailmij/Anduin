@@ -16,7 +16,15 @@
             <Button mvx:Bi.nd="Command AddFeatureBranchCommand"  IsEnabled="{Binding CanAddFeatureBranch}" Margin="0 0 0 15">Add Guest</Button>
 
             <DataGrid ItemsSource="{Binding FeatureBranches}" AutoGenerateColumns="True"></DataGrid>
-   
+
+            <ItemsControl ItemsSource="{Binding FeatureBranches}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Content="{Binding Name}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
         </StackPanel>
     </Grid>
 </views:MvxWpfView>
