@@ -15,6 +15,18 @@ namespace Anduin.Core.ViewModels
             {
                 Name = "Test"
             });
+            _featureBranches.Add(new FeatureBranchModel
+            {
+                Name = "Test"
+            });
+            _featureBranches.Add(new FeatureBranchModel
+            {
+                Name = "Test"
+            });
+            _featureBranches.Add(new FeatureBranchModel
+            {
+                Name = "Test"
+            });
         }
 
         public IMvxCommand AddFeatureBranchCommand { get; set; }
@@ -27,7 +39,7 @@ namespace Anduin.Core.ViewModels
                 Name = Name
             };
             Name = Name;
-
+            Name = string.Empty;
             FeatureBranches.Add(featureBranch);
         }
 
