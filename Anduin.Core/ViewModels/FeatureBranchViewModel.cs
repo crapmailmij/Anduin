@@ -18,7 +18,7 @@ namespace Anduin.Core.ViewModels
             {
                 _featureBranches.Add(new FeatureBranchModel
                 {
-                    Name = "Test"
+                    Name = i.ToString()
                 });
 
             }
@@ -42,7 +42,7 @@ namespace Anduin.Core.ViewModels
 
         public void ProcessFeatureBranch()
         {
-            IEnumerable<string> selectedData = FeatureBranches.Where(d => d.IsSelected).Select(d => d.Name);
+            IEnumerable<string> selectedData = FeatureBranches.Where(d => d.IsSelected.Equals(true)).Select(d => d.Name);
 
             string testName = Name;
         }
