@@ -42,9 +42,19 @@ namespace Anduin.Core.ViewModels
 
         public void ProcessFeatureBranch()
         {
-            IEnumerable<string> selectedData = FeatureBranches.Where(d => d.IsSelected.Equals(true)).Select(d => d.Name);
+            var featureBranchName = FeatureBranches.Where(d => d.IsSelected.Equals(true));
 
-            string testName = Name;
+            var test = FeatureBranches.Where(featureBranch => featureBranch.IsSelected);
+
+            foreach(FeatureBranchModel featureBranch in FeatureBranches)
+            {
+                bool IsSelected = featureBranch.IsSelected == true;
+                if (IsSelected)
+                {
+                    string testName = featureBranch.Name;
+                }
+            }
+
         }
 
         public bool CanAddFeatureBranch => Name?.Length > 0;
