@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anduin.Core", "Anduin.Core\Anduin.Core.csproj", "{543CF2B6-45B0-479D-8C7C-1B4437E4FFAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anduin.Wpf", "Anduin.Wpf\Anduin.Wpf.csproj", "{55E78778-A627-4C43-9445-5EC203C180A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anduin.Wpf", "Anduin.Wpf\Anduin.Wpf.csproj", "{55E78778-A627-4C43-9445-5EC203C180A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
