@@ -1,6 +1,8 @@
 ﻿using Anduin.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Anduin.Core.ViewModels
 {
@@ -10,27 +12,19 @@ namespace Anduin.Core.ViewModels
         public FeatureBranchViewModel()
         {
             AddFeatureBranchCommand = new MvxCommand(AddFeatureBranch);
+            ProcessFeatureBranchCommand = new MvxCommand(ProcessFeatureBranch);
 
-            _featureBranches.Add(new FeatureBranchModel
+            for (int i = 0; i < 10; i++)
             {
-                Name = "Test"
-            });
-            _featureBranches.Add(new FeatureBranchModel
-            {
-                Name = "Test"
-            });
-            _featureBranches.Add(new FeatureBranchModel
-            {
-                Name = "Test"
-            });
-            _featureBranches.Add(new FeatureBranchModel
-            {
-                Name = "Test"
-            });
+                _featureBranches.Add(new FeatureBranchModel
+                {
+                    Name = "Test"
+                });
+
+            }
         }
 
         public IMvxCommand AddFeatureBranchCommand { get; set; }
-
 
         public void AddFeatureBranch()
         {
@@ -41,6 +35,16 @@ namespace Anduin.Core.ViewModels
             Name = Name;
             Name = string.Empty;
             FeatureBranches.Add(featureBranch);
+        }
+
+
+        public IMvxCommand ProcessFeatureBranchCommand { get; set; }
+
+        public void ProcessFeatureBranch()
+        {
+            IEnumerable<string> selectedData = FeatureBranches.Where(d => d.IsSelected).Select(d => d.Name);
+
+            string testName = Name;
         }
 
         public bool CanAddFeatureBranch => Name?.Length > 0;
@@ -64,6 +68,8 @@ namespace Anduin.Core.ViewModels
                 RaisePropertyChanged(() => CanAddFeatureBranch);
             }
         }
+
+       
 
     }
 }

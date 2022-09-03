@@ -10,5 +10,7 @@
             set { _name = value; }
         }
 
+        public bool IsSelected { get; set; }
+
     }
 }
