@@ -1,3 +1,4 @@
+using Anduin.Core.ViewModels;
 using MvvmCross.Tests;
 using System;
 using Xunit;
@@ -11,6 +12,8 @@ namespace Anduin.Test
         {
             base.Setup(); // from MvxIoCSupportingTest
 
+            var featureBranchViewModel = new FeatureBranchViewModel();
+            featureBranchViewModel.ProcessFeatureBranch();
             // your test code
         }
     }
