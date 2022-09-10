@@ -1,8 +1,9 @@
-﻿using Anduin.Core.ViewModels;
+﻿using Anduin.Core.Services.Implementations;
+
+using Anduin.Core.ViewModels;
+using MvvmCross;
+using MvvmCross.IoC;
 using MvvmCross.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Anduin.Core
 {
@@ -10,7 +11,15 @@ namespace Anduin.Core
     {
         public override void Initialize()
         {
-            base.Initialize();
+            //base.Initialize();
+
+            CreatableTypes()
+                .EndingWith("Service")
+                .AsInterfaces()
+                .RegisterAsLazySingleton();
+
+            //Mvx.IoCProvider.RegisterType<IGitService, GitService>();
+            //Mvx.IoCProvider.RegisterType<IFeatureBranchService, FeatureBranchService>();
 
             RegisterAppStart<FeatureBranchViewModel>();
 

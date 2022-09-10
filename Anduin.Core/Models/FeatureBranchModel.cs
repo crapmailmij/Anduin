@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Anduin.Core.Models
+﻿namespace Anduin.Core.Models
 {
     public class FeatureBranchModel
     {
@@ -14,7 +10,7 @@ namespace Anduin.Core.Models
             set { _name = value; }
         }
 
-
+        public bool IsSelected { get; set; }
 
     }
 }
