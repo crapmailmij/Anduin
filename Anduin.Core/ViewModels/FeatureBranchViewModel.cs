@@ -32,6 +32,7 @@ namespace Anduin.Core.ViewModels
 
         public bool CanAddFeatureBranch => Name?.Length > 0;
 
+    
         private MvxObservableCollection<FeatureBranchModel> _featureBranches = new MvxObservableCollection<FeatureBranchModel>();
         public MvxObservableCollection<FeatureBranchModel> FeatureBranches
         {
@@ -46,6 +47,14 @@ namespace Anduin.Core.ViewModels
 
             AddFeatureBranchCommand = new MvxCommand(AddFeatureBranch);
             ProcessFeatureBranchCommand = new MvxCommand(ProcessCheckedFeatureBranch);
+            DecomposeModelTriggerCommand = new MvxCommand(DecomposeModelTrigger);
+            ComposeModelTriggerCommand = new MvxCommand(ComposeModelTrigger);
+
+            for(int i = 0; i < 20; i++)
+            {
+                FeatureBranches.Add(new FeatureBranchModel { Name = "test" });
+            }
+
         }
 
         public IMvxCommand AddFeatureBranchCommand { get; set; }
@@ -62,17 +71,6 @@ namespace Anduin.Core.ViewModels
         }
 
         public IMvxCommand ProcessFeatureBranchCommand { get; set; }
-
-        public void ProcessCheckedFeatureBranch()
-        {
-            var selectedFeatureBranch = FeatureBranches.Where(featureBranch => featureBranch.IsSelected).ToList();
-            bool singleBranchSelected = selectedFeatureBranch.Count == 1;
-
-            if(singleBranchSelected) SelectedFeatureBranch = selectedFeatureBranch[0];
-            else { SelectedFeatureBranch = null; }
-           
-         }
-
         public void ProcessLocalFeatureBranches()
         {
             List<string> featureBranches = _featureBranchService.ProcessFeatureBranch();
@@ -89,6 +87,29 @@ namespace Anduin.Core.ViewModels
             }
 
         }
+
+        public IMvxCommand DecomposeModelTriggerCommand { get; set; }
+        public void DecomposeModelTrigger()
+        {
+            _featureBranchService.DecomposeModel("asd");
+        }
+        
+        public IMvxCommand ComposeModelTriggerCommand { get; set; }
+
+        public void ComposeModelTrigger()
+        {
+            _featureBranchService.ComposeModel("asd");
+        }
+
+        public void ProcessCheckedFeatureBranch()
+        {
+            var selectedFeatureBranch = FeatureBranches.Where(featureBranch => featureBranch.IsSelected).ToList();
+            bool singleBranchSelected = selectedFeatureBranch.Count == 1;
+
+            if(singleBranchSelected) SelectedFeatureBranch = selectedFeatureBranch[0];
+            else { SelectedFeatureBranch = null; }
+           
+         }
 
     }
 }

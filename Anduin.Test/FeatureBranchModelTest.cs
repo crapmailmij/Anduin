@@ -154,5 +154,8 @@ namespace Anduin.Test
             //assert
             Assert.Null(featureBranchViewModel.SelectedFeatureBranch);
         }
+
+       
+
     }
 }

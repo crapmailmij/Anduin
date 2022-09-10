@@ -15,6 +15,17 @@ namespace Anduin.Core.Services.Implementations
             _gitService = gitService;
         }
 
+        public void DecomposeModel(string name)
+        {
+            
+        }
+
+        public void ComposeModel(string name)
+        {
+
+        }
+
+
         public List<string> ProcessFeatureBranch()
         {
             return new List<string>();

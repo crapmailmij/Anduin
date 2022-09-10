@@ -6,5 +6,7 @@ namespace Anduin.Core.Services.Implementations
     {
         List<string> ProcessFeatureBranch();
         List<string> ReadLocalFile();
+        void DecomposeModel(string v);
+        void ComposeModel(string v);
     }
 }
