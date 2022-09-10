@@ -2,25 +2,16 @@
 # Get_Planet.ps1
 #
 BeforeAll {
-    function Get-Planet ([string]$Name = '*') {
-        $planets = @(
-            @{ Name = 'Mercury' }
-            @{ Name = 'Venus'   }
-            @{ Name = 'Earth'   }
-            @{ Name = 'Mars'    }
-            @{ Name = 'Jupiter' }
-            @{ Name = 'Saturn'  }
-            @{ Name = 'Uranus'  }
-            @{ Name = 'Neptune' }
-        ) | ForEach-Object { [PSCustomObject] $_ }
-
-        $planets | Where-Object { $_.Name -like $Name }
-    }
+    . $PSScriptRoot/SetupGit.ps1
 }
 
-Describe 'Get-Planet' {
+Describe 'CheckRemoteIsSet' {
     It 'Given no parameters, it lists all 8 planets' {
-        $allPlanets = Get-Planet
-        $allPlanets.Count | Should -Be 8
+
+        $test = CheckRemoteIsSet
+        $test | Should -Be false
+
+        #$allPlanets = Get-Planet
+        #$allPlanets.Count | Should -Be 8
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Anduin.Core.Models;
+using Anduin.Core.Services.Implementations;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
@@ -8,62 +9,12 @@ namespace Anduin.Core.ViewModels
 {
     public class FeatureBranchViewModel : MvxViewModel
     {
+        private FeatureBranchModel _selectedFeatureBranch;
 
-        public FeatureBranchViewModel()
+        public FeatureBranchModel SelectedFeatureBranch
         {
-            AddFeatureBranchCommand = new MvxCommand(AddFeatureBranch);
-            ProcessFeatureBranchCommand = new MvxCommand(ProcessFeatureBranch);
-
-            for (int i = 0; i < 10; i++)
-            {
-                _featureBranches.Add(new FeatureBranchModel
-                {
-                    Name = i.ToString()
-                });
-
-            }
-        }
-
-        public IMvxCommand AddFeatureBranchCommand { get; set; }
-
-        public void AddFeatureBranch()
-        {
-            FeatureBranchModel featureBranch = new FeatureBranchModel
-            {
-                Name = Name
-            };
-            Name = Name;
-            Name = string.Empty;
-            FeatureBranches.Add(featureBranch);
-        }
-
-
-        public IMvxCommand ProcessFeatureBranchCommand { get; set; }
-
-        public void ProcessFeatureBranch()
-        {
-            var featureBranchName = FeatureBranches.Where(d => d.IsSelected.Equals(true));
-
-            var test = FeatureBranches.Where(featureBranch => featureBranch.IsSelected);
-
-            foreach(FeatureBranchModel featureBranch in FeatureBranches)
-            {
-                bool IsSelected = featureBranch.IsSelected == true;
-                if (IsSelected)
-                {
-                    string testName = featureBranch.Name;
-                }
-            }
-
-        }
-
-        public bool CanAddFeatureBranch => Name?.Length > 0;
-
-        private MvxObservableCollection<FeatureBranchModel> _featureBranches = new MvxObservableCollection<FeatureBranchModel>();
-        public MvxObservableCollection<FeatureBranchModel> FeatureBranches
-        {
-            get { return _featureBranches; }
-            set { SetProperty(ref _featureBranches, value); }
+            get { return _selectedFeatureBranch; }
+            set { _selectedFeatureBranch = value; }
         }
 
         private string _name;
@@ -79,7 +30,65 @@ namespace Anduin.Core.ViewModels
             }
         }
 
-       
+        public bool CanAddFeatureBranch => Name?.Length > 0;
+
+        private MvxObservableCollection<FeatureBranchModel> _featureBranches = new MvxObservableCollection<FeatureBranchModel>();
+        public MvxObservableCollection<FeatureBranchModel> FeatureBranches
+        {
+            get { return _featureBranches; }
+            set { SetProperty(ref _featureBranches, value); }
+        }
+
+        private IFeatureBranchService _featureBranchService;
+        public FeatureBranchViewModel(IFeatureBranchService featureBranchService)
+        {
+            _featureBranchService = featureBranchService;
+
+            AddFeatureBranchCommand = new MvxCommand(AddFeatureBranch);
+            ProcessFeatureBranchCommand = new MvxCommand(ProcessCheckedFeatureBranch);
+        }
+
+        public IMvxCommand AddFeatureBranchCommand { get; set; }
+
+        public void AddFeatureBranch()
+        {
+            FeatureBranchModel featureBranch = new FeatureBranchModel
+            {
+                Name = Name
+            };
+            Name = Name;
+            Name = string.Empty;
+            FeatureBranches.Add(featureBranch);
+        }
+
+        public IMvxCommand ProcessFeatureBranchCommand { get; set; }
+
+        public void ProcessCheckedFeatureBranch()
+        {
+            var selectedFeatureBranch = FeatureBranches.Where(featureBranch => featureBranch.IsSelected).ToList();
+            bool singleBranchSelected = selectedFeatureBranch.Count == 1;
+
+            if(singleBranchSelected) SelectedFeatureBranch = selectedFeatureBranch[0];
+            else { SelectedFeatureBranch = null; }
+           
+         }
+
+        public void ProcessLocalFeatureBranches()
+        {
+            List<string> featureBranches = _featureBranchService.ProcessFeatureBranch();
+            bool featureBranchesNotEmpty = featureBranches != null;
+
+            if (featureBranchesNotEmpty)
+            {
+                foreach (string name in featureBranches)
+                {
+                    FeatureBranchModel featureBranchModel = new FeatureBranchModel();
+                    featureBranchModel.Name = name;
+                    FeatureBranches.Add(featureBranchModel);
+                }
+            }
+
+        }
 
     }
 }
