@@ -5,6 +5,7 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Anduin.Core.ViewModels
 {
@@ -12,7 +13,6 @@ namespace Anduin.Core.ViewModels
     {
 
         private string _name;
-
         public string Name
         {
             get { return _name; }
@@ -23,16 +23,14 @@ namespace Anduin.Core.ViewModels
                 RaisePropertyChanged(() => CanAddFeatureBranch);
             }
         }
-
         public bool CanAddFeatureBranch => Name?.Length > 0;
-
-
         private MvxObservableCollection<FeatureBranchModel> _featureBranches = new MvxObservableCollection<FeatureBranchModel>();
         public MvxObservableCollection<FeatureBranchModel> FeatureBranches
         {
             get { return _featureBranches; }
             set { SetProperty(ref _featureBranches, value); }
         }
+
 
         private readonly IFeatureBranchService _featureBranchService;
         private ILogger<FeatureBranchViewModel> _logger;
@@ -49,7 +47,14 @@ namespace Anduin.Core.ViewModels
             //    FeatureBranches.Add(new FeatureBranchModel { Name = "test" });
             //}
         }
+       
+        
+        public override async Task Initialize()
+        {
+            await base.Initialize();
 
+            _featureBranchService.InitialiseParameters();
+        }
         public IMvxCommand DecomposeModelTriggerCommand { get; set; }
         public void DecomposeModelTrigger()
         {
@@ -68,7 +73,6 @@ namespace Anduin.Core.ViewModels
                 _logger.LogError("No featurebranch selected when it was clicked");
             }
         }
-
         public IMvxCommand ComposeModelTriggerCommand { get; set; }
         public void ComposeModelTrigger()
         {
@@ -88,6 +92,7 @@ namespace Anduin.Core.ViewModels
 
         }
 
+
         public FeatureBranchModel ProcessCheckedFeatureBranch()
         {
             var selectedFeatureBranch = FeatureBranches.Where(featureBranch => featureBranch.IsSelected).ToList();
@@ -97,7 +102,6 @@ namespace Anduin.Core.ViewModels
             else { return null; }
 
         }
-
         public void ProcessFetchedFeatureBranches()
         {
             List<string> fetchedFeatureBranches = _featureBranchService.ProcessFetchedBranch();
@@ -125,10 +129,6 @@ namespace Anduin.Core.ViewModels
 
         }
 
-        public void InitializeParameters()
-        {
-            _featureBranchService.InitialiseParameters();
-        }
 
     }
 }
