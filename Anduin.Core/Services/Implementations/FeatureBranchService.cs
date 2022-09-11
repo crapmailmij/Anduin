@@ -1,53 +1,38 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using static Anduin.Core.Services.Implementations.GitService;
 
 namespace Anduin.Core.Services.Implementations
 {
     public class FeatureBranchService : IFeatureBranchService
     {
         public IGitService _gitService;
+        private readonly ILogger<FeatureBranchService> _logger;
 
-        public FeatureBranchService(IGitService gitService)
+        public FeatureBranchService(ILogger<FeatureBranchService> logger, IGitService gitService)
         {
+            _logger = logger;
             _gitService = gitService;
         }
 
         public void DecomposeModel(string name)
         {
-            
+            _gitService.DecomposeModel(name);
         }
 
         public void ComposeModel(string name)
         {
-
+            _gitService.ComposeModel(name);
         }
 
 
-        public List<string> ProcessFeatureBranch()
+        public List<string> ProcessFetchedBranch()
         {
             return new List<string>();
         }
 
-        public List<string> ReadLocalFile()
+        public void InitialiseParameters()
         {
-            using (var reader = new StreamReader(@"C:\test.csv"))
-            {
-                List<string> listA = new List<string>();
-                List<string> listB = new List<string>();
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    var values = line.Split(';');
 
-                    listA.Add(values[0]);
-                    listB.Add(values[1]);
-                }
-            }
-
-            return new List<string>();
         }
     }
 }

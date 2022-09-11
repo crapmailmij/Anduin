@@ -4,9 +4,10 @@ namespace Anduin.Core.Services.Implementations
 {
     public interface IFeatureBranchService
     {
-        List<string> ProcessFeatureBranch();
-        List<string> ReadLocalFile();
+        List<string> ProcessFetchedBranch();
+
         void DecomposeModel(string v);
         void ComposeModel(string v);
+        void InitialiseParameters();
     }
 }

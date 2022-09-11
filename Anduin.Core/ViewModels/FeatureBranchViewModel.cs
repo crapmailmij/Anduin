@@ -1,5 +1,6 @@
 ﻿using Anduin.Core.Models;
 using Anduin.Core.Services.Implementations;
+using Microsoft.Extensions.Logging;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
@@ -9,13 +10,6 @@ namespace Anduin.Core.ViewModels
 {
     public class FeatureBranchViewModel : MvxViewModel
     {
-        private FeatureBranchModel _selectedFeatureBranch;
-
-        public FeatureBranchModel SelectedFeatureBranch
-        {
-            get { return _selectedFeatureBranch; }
-            set { _selectedFeatureBranch = value; }
-        }
 
         private string _name;
 
@@ -32,7 +26,7 @@ namespace Anduin.Core.ViewModels
 
         public bool CanAddFeatureBranch => Name?.Length > 0;
 
-    
+
         private MvxObservableCollection<FeatureBranchModel> _featureBranches = new MvxObservableCollection<FeatureBranchModel>();
         public MvxObservableCollection<FeatureBranchModel> FeatureBranches
         {
@@ -40,76 +34,101 @@ namespace Anduin.Core.ViewModels
             set { SetProperty(ref _featureBranches, value); }
         }
 
-        private IFeatureBranchService _featureBranchService;
-        public FeatureBranchViewModel(IFeatureBranchService featureBranchService)
+        private readonly IFeatureBranchService _featureBranchService;
+        private ILogger<FeatureBranchViewModel> _logger;
+        public FeatureBranchViewModel(ILogger<FeatureBranchViewModel> logger, IFeatureBranchService featureBranchService)
         {
+            _logger = logger;
             _featureBranchService = featureBranchService;
 
-            AddFeatureBranchCommand = new MvxCommand(AddFeatureBranch);
-            ProcessFeatureBranchCommand = new MvxCommand(ProcessCheckedFeatureBranch);
             DecomposeModelTriggerCommand = new MvxCommand(DecomposeModelTrigger);
             ComposeModelTriggerCommand = new MvxCommand(ComposeModelTrigger);
 
-            for(int i = 0; i < 20; i++)
-            {
-                FeatureBranches.Add(new FeatureBranchModel { Name = "test" });
-            }
-
-        }
-
-        public IMvxCommand AddFeatureBranchCommand { get; set; }
-
-        public void AddFeatureBranch()
-        {
-            FeatureBranchModel featureBranch = new FeatureBranchModel
-            {
-                Name = Name
-            };
-            Name = Name;
-            Name = string.Empty;
-            FeatureBranches.Add(featureBranch);
-        }
-
-        public IMvxCommand ProcessFeatureBranchCommand { get; set; }
-        public void ProcessLocalFeatureBranches()
-        {
-            List<string> featureBranches = _featureBranchService.ProcessFeatureBranch();
-            bool featureBranchesNotEmpty = featureBranches != null;
-
-            if (featureBranchesNotEmpty)
-            {
-                foreach (string name in featureBranches)
-                {
-                    FeatureBranchModel featureBranchModel = new FeatureBranchModel();
-                    featureBranchModel.Name = name;
-                    FeatureBranches.Add(featureBranchModel);
-                }
-            }
-
+            //for(int i = 0; i < 20; i++)
+            //{
+            //    FeatureBranches.Add(new FeatureBranchModel { Name = "test" });
+            //}
         }
 
         public IMvxCommand DecomposeModelTriggerCommand { get; set; }
         public void DecomposeModelTrigger()
         {
-            _featureBranchService.DecomposeModel("asd");
-        }
-        
-        public IMvxCommand ComposeModelTriggerCommand { get; set; }
+            bool branchIsSelected;
 
+            FeatureBranchModel featureBranch = ProcessCheckedFeatureBranch();
+            branchIsSelected = featureBranch != null;
+
+            if (branchIsSelected)
+            {
+                _featureBranchService.ComposeModel(featureBranch.Name);
+                _logger.LogInformation("starting compose model");
+            }
+            else
+            {
+                _logger.LogError("No featurebranch selected when it was clicked");
+            }
+        }
+
+        public IMvxCommand ComposeModelTriggerCommand { get; set; }
         public void ComposeModelTrigger()
         {
-            _featureBranchService.ComposeModel("asd");
+            bool branchIsSelected;
+
+            FeatureBranchModel featureBranch = ProcessCheckedFeatureBranch();
+            branchIsSelected = featureBranch != null;
+
+            if (branchIsSelected)
+            {
+                _featureBranchService.ComposeModel(featureBranch.Name);
+            }
+            else
+            {
+                _logger.LogError("No featurebranch selected when it was clicked");
+            }
+
         }
 
-        public void ProcessCheckedFeatureBranch()
+        public FeatureBranchModel ProcessCheckedFeatureBranch()
         {
             var selectedFeatureBranch = FeatureBranches.Where(featureBranch => featureBranch.IsSelected).ToList();
             bool singleBranchSelected = selectedFeatureBranch.Count == 1;
 
-            if(singleBranchSelected) SelectedFeatureBranch = selectedFeatureBranch[0];
-            else { SelectedFeatureBranch = null; }
-           
-         }
+            if (singleBranchSelected) return selectedFeatureBranch[0];
+            else { return null; }
+
+        }
+
+        public void ProcessFetchedFeatureBranches()
+        {
+            List<string> fetchedFeatureBranches = _featureBranchService.ProcessFetchedBranch();
+            bool isCorrectName;
+            
+            foreach (string name in fetchedFeatureBranches)
+            {
+                isCorrectName = name.Length > 1;
+
+                if (isCorrectName)
+                {
+                    FeatureBranches.Add(new FeatureBranchModel
+                    {
+                        Name = name,
+                        IsSelected = false
+                    });
+
+                    _logger.LogInformation($"Fetched featurebranch:{name} is processed");
+                }
+                else
+                {
+                    _logger.LogError($"Fetched featurebranch: {name} is not processed due to naming error");
+                }
+            }
+
+        }
+
+        public void InitializeParameters()
+        {
+            _featureBranchService.InitialiseParameters();
+        }
 
     }
 }

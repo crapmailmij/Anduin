@@ -8,5 +8,8 @@ namespace Anduin.Core.Services.Implementations
         string InvokeCommand();
         void SetupGit();
         void WriteToLocalFile();
+        void DecomposeModel(string name);
+        void ComposeModel(string name);
+
     }
 }

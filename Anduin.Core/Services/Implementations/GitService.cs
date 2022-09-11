@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using System.Reflection;
-using System.Text;
 
 
 namespace Anduin.Core.Services.Implementations
@@ -18,9 +15,6 @@ namespace Anduin.Core.Services.Implementations
         {
             PowerShell powerShell = CreatePowerShellInstance();
             string origAssemblyLocation = Assembly.GetExecutingAssembly().CodeBase;
-
-
-
         }
 
         public PowerShell CreatePowerShellInstance()
@@ -28,11 +22,32 @@ namespace Anduin.Core.Services.Implementations
             return PowerShell.Create();
         }
 
+        public void ClosePowerShellInstance(PowerShell powerShell)
+        {
+            powerShell.Stop();
+        }
+
         public void WriteToLocalFile()
         {
 
         }
 
+        public void DecomposeModel(string name)
+        {
+            PowerShell powerShell = CreatePowerShellInstance();
+            powerShell.AddScript(" ");
+            powerShell.AddParameter(" ");
+            powerShell.Invoke();
+            ClosePowerShellInstance(powerShell);
+        }
 
+        public void ComposeModel(string name)
+        {
+            PowerShell powerShell = CreatePowerShellInstance();
+            powerShell.AddScript(" ");
+            powerShell.AddParameter(" ");
+            powerShell.Invoke();
+            ClosePowerShellInstance(powerShell);
+        }
     }
 }

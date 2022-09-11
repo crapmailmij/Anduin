@@ -37,7 +37,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <!--<CheckBox Content="{Binding Name ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>-->
-                                <CheckBox Content="{Binding Name}" IsChecked="{Binding Path=IsSelected, Mode=TwoWay}"/>
+                            <CheckBox mvx:Bi.nd="Command CheckIfSingleIsSelectedCommand" Content="{Binding Name}" IsChecked="{Binding Path=IsSelected, Mode=TwoWay}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

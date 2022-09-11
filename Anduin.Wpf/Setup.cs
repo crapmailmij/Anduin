@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MvvmCross.Platforms.Wpf.Core;
 using Serilog;
+using Serilog.Events;
 using Serilog.Extensions.Logging;
 
 namespace Anduin.Wpf
@@ -17,7 +18,7 @@ namespace Anduin.Wpf
             // serilog configuration
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.Trace()
+                .WriteTo.Debug()
                 .CreateLogger();
 
             return new SerilogLoggerFactory();
