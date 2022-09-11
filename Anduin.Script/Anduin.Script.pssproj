@@ -26,8 +26,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Anduin.Script.ps1" />
     <Compile Include="Get-Planet.ps1" />
+    <Compile Include="InitializeSystem.ps1" />
+    <Compile Include="RunDecomposer.ps1" />
     <Compile Include="SetupGit.Unit.Tests.ps1" />
     <Compile Include="Get-Planet.Tests.ps1" />
     <Compile Include="SetupGit.ps1" />

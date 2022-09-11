@@ -1,7 +1,5 @@
-﻿using Anduin.Core.Services.Implementations;
-
+﻿
 using Anduin.Core.ViewModels;
-using MvvmCross;
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
 

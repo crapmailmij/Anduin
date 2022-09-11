@@ -4,8 +4,6 @@
 
 $Global:correctRemoteUrl = 'https://github.com/crapmailmij/Anduin.git'
 
-function SetupGit{}
-
 function CheckRemoteIsSet
 {
 	param($url)

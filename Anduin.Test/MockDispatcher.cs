@@ -3,7 +3,6 @@ using MvvmCross.ViewModels;
 using MvvmCross.Views;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Anduin.Test
@@ -56,7 +55,6 @@ namespace Anduin.Test
         Task IMvxMainThreadAsyncDispatcher.ExecuteOnMainThreadAsync(Action action, bool maskExceptions)
         {
             return Task.FromResult<object>(null);
-
         }
 
         public Task ExecuteOnMainThreadAsync(Func<Task> action, bool maskExceptions = true)
